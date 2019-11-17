@@ -2,6 +2,8 @@ package light.star.timeandmoney.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +14,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@Builder
-public class WorkingModel {
+@Getter
+@NoArgsConstructor
+public class WorkingEntity extends BaseTimeModel{
 
+    /**
+     * Entity 모델은 db layer 모델로 이 자체로 불변성을 지니게 해줘야함
+     * 실제 view 에서는 다른 모델을 사용하는 것을 권장
+     */
     //todo : 데이터 보정 어노테이션
 
     @Id @GeneratedValue
@@ -32,13 +38,14 @@ public class WorkingModel {
     private LocalDateTime startWorkTime;
     //퇴근 시간
     private LocalDateTime endWorkTime;
-    //1초당 급여 상승
-    @Transient
-    private BigDecimal perIncreaseMoney;
-    //근무 시작일
-    @Transient
-    private LocalDate startWorkday;
-    //근무 종료일
-    @Transient
-    private LocalDate endWorkday;
+
+    @Builder
+    public WorkingEntity(int salaryDay, int salary, int checkWeekWorking, int weekWorking) {
+        this.SalaryDay = salaryDay;
+        this.Salary = salary;
+        this.checkWeekWorking = checkWeekWorking;
+        this.weekWorking = weekWorking;
+//        this.startWorkTime = startWorkTime;
+//        this.endWorkTime = endWorkTime;
+    }
 }

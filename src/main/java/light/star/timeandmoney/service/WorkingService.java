@@ -1,24 +1,32 @@
 package light.star.timeandmoney.service;
 
-import light.star.timeandmoney.domain.WorkingModel;
+import light.star.timeandmoney.domain.WorkingEntity;
+import light.star.timeandmoney.domain.WorkingRequestModel;
+import light.star.timeandmoney.domain.WorkingResponseModel;
 import light.star.timeandmoney.repository.WorkingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class WorkingService {
 
-    @Autowired
     WorkingRepository workingRepository;
 
-    public void initSetting(WorkingModel workingModel) {
-        workingRepository.save(workingModel);
+    @Transactional(readOnly = true)
+    public void initSetting(WorkingRequestModel workingRequestModel) {
+        workingRepository.save(workingRequestModel.toEntity());
     }
 
-    public List<WorkingModel> getList(){
-        List<WorkingModel> listAll = workingRepository.findAll();
-        return listAll;
+    @Transactional(readOnly = true)
+    public List<WorkingResponseModel> getList(){
+        List<WorkingEntity> listAll = workingRepository.findAllDesc();
+        return listAll.stream()
+                .map(WorkingResponseModel::new)
+                .collect(Collectors.toList());
     }
 }
