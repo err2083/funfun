@@ -1,17 +1,13 @@
 package light.star.timeandmoney.domain;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -31,21 +27,24 @@ public class WorkingEntity extends BaseTimeModel{
     //월급
     private int Salary;
     //1주 몆일 근무?
-    private int checkWeekWorking;
+    private int weekWorkingDay;
     //1주일 몆시간 근무?
-    private int weekWorking;
+    private int weekWorkingTime;
     //출근 시간
-    private LocalDateTime startWorkTime;
+    private LocalTime startWorkTime;
     //퇴근 시간
-    private LocalDateTime endWorkTime;
+    private LocalTime endWorkTime;
+    //초당 버는 액수
+    private int perIncreaseMoney;
 
     @Builder
-    public WorkingEntity(int salaryDay, int salary, int checkWeekWorking, int weekWorking) {
+    public WorkingEntity(int salaryDay, int salary, int weekWorkingDay, int weekWorkingTime, LocalTime startWorkTime, LocalTime endWorkTime, int perIncreaseMoney) {
         this.SalaryDay = salaryDay;
         this.Salary = salary;
-        this.checkWeekWorking = checkWeekWorking;
-        this.weekWorking = weekWorking;
-//        this.startWorkTime = startWorkTime;
-//        this.endWorkTime = endWorkTime;
+        this.weekWorkingDay = weekWorkingDay;
+        this.weekWorkingTime = weekWorkingTime;
+        this.startWorkTime = startWorkTime;
+        this.endWorkTime = endWorkTime;
+        this.perIncreaseMoney = perIncreaseMoney;
     }
 }

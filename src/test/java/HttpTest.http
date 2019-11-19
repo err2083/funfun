@@ -8,3 +8,7 @@
 GET http://localhost:8080/working
 
 ###
+
+POST http://localhost:8080/setting?salaryDay=25&salary=2700000&checkWeekWorking=5&weekWorking=40&startWorkTime=08:30&endWorkTime=17:30
+
+###

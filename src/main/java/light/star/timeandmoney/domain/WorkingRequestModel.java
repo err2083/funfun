@@ -1,74 +1,53 @@
 package light.star.timeandmoney.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import light.star.timeandmoney.util.Constant;
+import light.star.timeandmoney.util.Function;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalTime;
 
-@Getter
-@Setter
+@Data
 public class WorkingRequestModel {
 
     //월급 받는 날짜
-    private int SalaryDay;
+    private int salaryDay;
     //월급
-    private int Salary;
+    private int salary;
     //1주 몆일 근무?
     private int checkWeekWorking;
     //1주일 몆시간 근무?
     private int weekWorking;
-//    //출근 시간
-//    @JsonFormat(pattern = "aa KK:mm")
-//    private LocalDateTime startWorkTime;
-//    //퇴근 시간
-//    @JsonFormat(pattern = "aa KK:mm")
-//    private LocalDateTime endWorkTime;
-    //1초당 급여 상승
-    private BigDecimal perIncreaseMoney;
-    //근무 시작일
-    private LocalDate startWorkday;
-    //근무 종료일
-    private LocalDate endWorkday;
+    //출근 시간
+    @DateTimeFormat(pattern = "kk:mm")
+    private LocalTime startWorkTime;
+    //퇴근 시간
+    @DateTimeFormat(pattern = "kk:mm")
+    private LocalTime endWorkTime;
 
-    @Builder
-    public WorkingRequestModel(int salaryDay, int salary, int checkWeekWorking, int weekWorking) {
-        this.SalaryDay = salaryDay;
-        this.Salary = salary;
+    public WorkingRequestModel(int salaryDay, int salary, int checkWeekWorking, int weekWorking, LocalTime startWorkTime, LocalTime endWorkTime) {
+        this.salaryDay = salaryDay;
+        this.salary = salary;
         this.checkWeekWorking = checkWeekWorking;
         this.weekWorking = weekWorking;
-//        this.startWorkTime = startWorkTime;
-//        this.endWorkTime = endWorkTime;
-
-        calculate();
+        this.startWorkTime = startWorkTime;
+        this.endWorkTime = endWorkTime;
     }
 
-    public WorkingEntity toEntity(){
+    public WorkingEntity toEntity() {
         return WorkingEntity.builder()
                 .salaryDay(this.getSalaryDay())
                 .salary(this.getSalary())
                 .checkWeekWorking(this.getCheckWeekWorking())
-                .weekWorking(this.getWeekWorking()).build();
-//                .startWorkTime(this.getStartWorkTime())
-//                .endWorkTime(this.getEndWorkTime()).build();
+                .weekWorking(this.getWeekWorking())
+                .startWorkTime(this.getStartWorkTime())
+                .endWorkTime(this.getEndWorkTime())
+                .perIncreaseMony(this.calculatePerIncreaseMoney()).build();
     }
 
-    private void calculate(){
-        calculateIncreaseMoney();
-        calculateStartWorkday();
-        calculateEndWorkday();
-    }
-
-    private void calculateIncreaseMoney(){
-        this.perIncreaseMoney = null;
-    }
-
-    private void calculateStartWorkday(){
-        this.startWorkday = null;
-    }
-
-    private void calculateEndWorkday(){
-        this.endWorkday = null;
+    private int calculatePerIncreaseMoney(){
+        BigDecimal workHour = Function.divideBigDecimal(weekWorking,checkWeekWorking);
+        return workHour.multiply(new BigDecimal(Constant.oneHour_to_sec)).intValue();
     }
 }
