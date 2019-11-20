@@ -16,9 +16,9 @@ public class WorkingRequestModel {
     //월급
     private int salary;
     //1주 몆일 근무?
-    private int checkWeekWorking;
+    private int weekWorkingDay;
     //1주일 몆시간 근무?
-    private int weekWorking;
+    private int weekWorkingTime;
     //출근 시간
     @DateTimeFormat(pattern = "kk:mm")
     private LocalTime startWorkTime;
@@ -26,11 +26,11 @@ public class WorkingRequestModel {
     @DateTimeFormat(pattern = "kk:mm")
     private LocalTime endWorkTime;
 
-    public WorkingRequestModel(int salaryDay, int salary, int checkWeekWorking, int weekWorking, LocalTime startWorkTime, LocalTime endWorkTime) {
+    public WorkingRequestModel(int salaryDay, int salary, int weekWorkingDay, int weekWorkingTime, LocalTime startWorkTime, LocalTime endWorkTime) {
         this.salaryDay = salaryDay;
         this.salary = salary;
-        this.checkWeekWorking = checkWeekWorking;
-        this.weekWorking = weekWorking;
+        this.weekWorkingDay = weekWorkingDay;
+        this.weekWorkingTime = weekWorkingTime;
         this.startWorkTime = startWorkTime;
         this.endWorkTime = endWorkTime;
     }
@@ -39,15 +39,15 @@ public class WorkingRequestModel {
         return WorkingEntity.builder()
                 .salaryDay(this.getSalaryDay())
                 .salary(this.getSalary())
-                .checkWeekWorking(this.getCheckWeekWorking())
-                .weekWorking(this.getWeekWorking())
+                .weekWorkingDay(this.getWeekWorkingDay())
+                .weekWorkingTime(this.getWeekWorkingTime())
                 .startWorkTime(this.getStartWorkTime())
                 .endWorkTime(this.getEndWorkTime())
-                .perIncreaseMony(this.calculatePerIncreaseMoney()).build();
+                .perIncreaseMoney(this.calculatePerIncreaseMoney()).build();
     }
 
     private int calculatePerIncreaseMoney(){
-        BigDecimal workHour = Function.divideBigDecimal(weekWorking,checkWeekWorking);
+        BigDecimal workHour = Function.divideBigDecimal(weekWorkingTime, weekWorkingDay);
         return workHour.multiply(new BigDecimal(Constant.oneHour_to_sec)).intValue();
     }
 }
