@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,8 +23,9 @@ public class WorkingResponseModelTest {
         System.out.println("isLeapYear : " + dateTime.isLeapYear()); // 윤년
         System.out.println("1 months" + dateTime.plusMonths(1));
         System.out.println("localDate : " + dateTime.of(2019,12,18).plusMonths(1));
-        System.out.println("until : " + dateTime.withDayOfYear(15).until(dateTime.withDayOfMonth(18)).getDays());
-        //int goalTotal = localDate.withDayOfMonth(salaryDay + 1).until(localDate.plusMonths(1).withDayOfMonth(salaryDay)).getDays();
+        System.out.println("chronoUnit : " + ChronoUnit.DAYS.between(dateTime.withDayOfMonth(25),dateTime.plusMonths(1).withDayOfMonth(25)));
+        System.out.println("past : " + (int) ChronoUnit.DAYS.between(dateTime.minusMonths(1).withDayOfMonth(25).plusDays(1), dateTime));
+        System.out.println("goal : " + (int) ChronoUnit.DAYS.between(dateTime.minusMonths(1).withDayOfMonth(25), dateTime.withDayOfMonth(25)));
         //https://a1010100z.tistory.com/entry/LocalDate-JAVA-8-LocalDate-%EC%A0%95%EB%A6%AC
         //https://heowc.dev/2018/03/18/java8-time-package/
         //만일 내가 10일 월급날이면 10월 11일 부터 11월 10일까지 일하거나

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @ToString
@@ -11,7 +12,7 @@ public class MonthWorkingModel {
     private LocalDate localDate;
 
     private WeekAndEndModel goal;
-
+    //오늘 포함하지 않는다
     private WeekAndEndModel past;
     //월급날
     private int salaryDay;
@@ -24,20 +25,23 @@ public class MonthWorkingModel {
         this.localDate = LocalDate.now();
         this.salaryDay = salaryDay;
         this.weekWorkingDay = weekWorkingDay;
-        this.isAfterSalaryDay = (this.salaryDay < LocalDate.now().getDayOfMonth());
+        this.isAfterSalaryDay = (this.salaryDay < localDate.getDayOfMonth());
         makingWeekAndEndModel();
     }
 
     private void makingWeekAndEndModel(){
+        int pastTotal, goalTotal;
         if (isAfterSalaryDay) { //오늘날짜가 월급날이 지났을 경우
-            int pastTotal = localDate.getDayOfMonth() - salaryDay - 1;
-            // 월급날 포함해야 하므로  +1
-            int goalTotal = localDate.withDayOfMonth(salaryDay + 1).until(localDate.plusMonths(1).withDayOfMonth(salaryDay)).getDays() + 1;
-            this.past = new WeekAndEndModel(pastTotal, localDate.getDayOfWeek(), weekWorkingDay);
+            pastTotal = localDate.getDayOfMonth() - salaryDay - 1;
+            goalTotal = (int) ChronoUnit.DAYS.between(localDate.withDayOfMonth(salaryDay), localDate.plusMonths(1).withDayOfMonth(salaryDay));
+            this.past = new WeekAndEndModel(pastTotal, localDate.withDayOfMonth(salaryDay).plusDays(1).getDayOfWeek(), weekWorkingDay);
             this.goal = new WeekAndEndModel(goalTotal,
-                    localDate.plusMonths(1).withDayOfYear(salaryDay).getDayOfWeek(), weekWorkingDay);
+                    localDate.withDayOfMonth(salaryDay).plusDays(1).getDayOfWeek(), weekWorkingDay);
         } else {
-            //todo 오늘날짜가 월급날 전일경우
+            pastTotal = (int) ChronoUnit.DAYS.between(localDate.minusMonths(1).withDayOfMonth(salaryDay).plusDays(1), localDate);
+            goalTotal = (int) ChronoUnit.DAYS.between(localDate.minusMonths(1).withDayOfMonth(salaryDay), localDate.withDayOfMonth(salaryDay));
+            this.past = new WeekAndEndModel(pastTotal, localDate.minusMonths(1).withDayOfMonth(salaryDay).plusDays(1).getDayOfWeek(), weekWorkingDay);
+            this.goal = new WeekAndEndModel(goalTotal, localDate.minusMonths(1).withDayOfMonth(salaryDay).plusDays(1).getDayOfWeek(), weekWorkingDay);
         }
     }
 }

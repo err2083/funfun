@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class WorkingResponseModel {
+    //todo - MonthWorkingModel 이랑 TodayWorkingModel 속성제외 나머지 속성 지우기
 
     private Long id;
     //월급 받는 날짜

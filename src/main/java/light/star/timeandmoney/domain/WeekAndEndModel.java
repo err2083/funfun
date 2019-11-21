@@ -8,7 +8,6 @@ import lombok.ToString;
 import java.time.DayOfWeek;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
 public class WeekAndEndModel {
@@ -20,6 +19,7 @@ public class WeekAndEndModel {
 
     private int weekWorkingDay;
 
+    //오늘 요일부터 몆일까지 구할지를 입력한다.
     public WeekAndEndModel(int totalDay, DayOfWeek dayOfWeek, int weekWorkingDay) {
         this.totalDay = totalDay;
         this.weekWorkingDay = weekWorkingDay;
@@ -33,7 +33,7 @@ public class WeekAndEndModel {
 
     private void calculateRemainder(DayOfWeek dayOfWeek) {
         int cal = this.totalDay % 7;
-        for (int i = dayOfWeek.getValue() - 1; i > dayOfWeek.getValue() - 1 - cal; i--) {
+        for (int i = dayOfWeek.getValue(); i < dayOfWeek.getValue() + cal; i++) {
             boolean isWeekendDay = isWeekendDay(DayOfWeek.of((i + 6) % 7 + 1));
             if (isWeekendDay) {
                 this.weekendDay += 1;

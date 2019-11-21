@@ -25,12 +25,40 @@ public class MonthWorkingModelTest {
         //When
         //Then
         System.out.println(monthWorkingModel.toString());
+
     }
 
     @Test
     public void salary15work6(){
         //Given
         MonthWorkingModel monthWorkingModel = new MonthWorkingModel(15,6);
+        //When
+        //Then
+        System.out.println(monthWorkingModel.toString());
+    }
+
+    @Test
+    public void salary25work5(){
+        //Given
+        MonthWorkingModel monthWorkingModel = new MonthWorkingModel(25,5);
+        //When
+        //Then
+        System.out.println(monthWorkingModel.toString());
+    }
+
+    @Test
+    public void salary28work5(){
+        //Given
+        MonthWorkingModel monthWorkingModel = new MonthWorkingModel(28,5);
+        //When
+        //Then
+        System.out.println(monthWorkingModel.toString());
+    }
+
+    @Test
+    public void salary24work6(){
+        //Given
+        MonthWorkingModel monthWorkingModel = new MonthWorkingModel(24,6);
         //When
         //Then
         System.out.println(monthWorkingModel.toString());
