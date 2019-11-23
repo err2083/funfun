@@ -34,17 +34,24 @@ public class WorkingEntity extends BaseTimeModel{
     private LocalTime startWorkTime;
     //퇴근 시간
     private LocalTime endWorkTime;
+    //출근 시간
+    private LocalTime startRestTime;
+    //퇴근 시간
+    private LocalTime endRestTime;
     //초당 버는 액수
     private int perIncreaseMoney;
 
     @Builder
-    public WorkingEntity(int salaryDay, int salary, int weekWorkingDay, int weekWorkingTime, LocalTime startWorkTime, LocalTime endWorkTime, int perIncreaseMoney) {
+    public WorkingEntity(int salaryDay, int salary, int weekWorkingDay, int weekWorkingTime, LocalTime startWorkTime, LocalTime endWorkTime,
+                         LocalTime startRestTime, LocalTime endRestTime, int perIncreaseMoney) {
         this.SalaryDay = salaryDay;
         this.Salary = salary;
         this.weekWorkingDay = weekWorkingDay;
         this.weekWorkingTime = weekWorkingTime;
         this.startWorkTime = startWorkTime;
         this.endWorkTime = endWorkTime;
+        this.startRestTime = startRestTime;
+        this.endRestTime = endRestTime;
         this.perIncreaseMoney = perIncreaseMoney;
     }
 }

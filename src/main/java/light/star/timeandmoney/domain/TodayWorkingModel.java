@@ -1,17 +1,19 @@
 package light.star.timeandmoney.domain;
 
+import light.star.timeandmoney.domain.enumType.WorkingStatus;
+import light.star.timeandmoney.domain.workInterface.TimeCalculator;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.Duration;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 
 @Getter
 @ToString
 public class TodayWorkingModel {
 
     private LocalTime localTime;
+
+    private WorkAndRestMinuteModel workAndRestMinuteModel;
 
     private FromToTimeModel workTime;
 
@@ -22,6 +24,20 @@ public class TodayWorkingModel {
         this.workTime = new FromToTimeModel(startWorkTime, endWorkTime);
         this.restTime = new FromToTimeModel(startRestTime, endRestTime);
 
-        //todo - 현재 시간 기준 몆분 일했고 몆분 쉬었고 몆분일해야하고 몆분 쉬는 시간이 있는지
+        calculateWorkAndRest();
+    }
+
+    //Test 용
+    public TodayWorkingModel(LocalTime lll, LocalTime startWorkTime, LocalTime endWorkTime, LocalTime startRestTime, LocalTime endRestTime){
+        localTime = lll;
+        this.workTime = new FromToTimeModel(startWorkTime, endWorkTime);
+        this.restTime = new FromToTimeModel(startRestTime, endRestTime);
+
+        calculateWorkAndRest();
+    }
+
+    private void calculateWorkAndRest() {
+        TimeCalculator calculator = WorkingStatus.findByLocalTime(localTime, workTime, restTime);
+        this.workAndRestMinuteModel = calculator.calculate(localTime, workTime, restTime);
     }
 }
