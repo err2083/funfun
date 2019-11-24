@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class WorkingEntity extends BaseTimeModel{
+public class WorkingEntity {
 
     /**
      * Entity 모델은 db layer 모델로 이 자체로 불변성을 지니게 해줘야함
@@ -38,12 +38,10 @@ public class WorkingEntity extends BaseTimeModel{
     private LocalTime startRestTime;
     //퇴근 시간
     private LocalTime endRestTime;
-    //초당 버는 액수
-    private int perIncreaseMoney;
 
     @Builder
     public WorkingEntity(int salaryDay, int salary, int weekWorkingDay, int weekWorkingTime, LocalTime startWorkTime, LocalTime endWorkTime,
-                         LocalTime startRestTime, LocalTime endRestTime, int perIncreaseMoney) {
+                         LocalTime startRestTime, LocalTime endRestTime) {
         this.SalaryDay = salaryDay;
         this.Salary = salary;
         this.weekWorkingDay = weekWorkingDay;
@@ -52,6 +50,5 @@ public class WorkingEntity extends BaseTimeModel{
         this.endWorkTime = endWorkTime;
         this.startRestTime = startRestTime;
         this.endRestTime = endRestTime;
-        this.perIncreaseMoney = perIncreaseMoney;
     }
 }

@@ -17,9 +17,14 @@ public class WorkingService {
 
     WorkingRepository workingRepository;
 
-    @Transactional(readOnly = true)
-    public void initSetting(WorkingRequestModel workingRequestModel) {
-        workingRepository.save(workingRequestModel.toEntity());
+    @Transactional
+    public WorkingResponseModel findOne(Long id) {
+        WorkingEntity entity = workingRepository.findById(id).orElse(null);
+        if (entity != null){
+            return new WorkingResponseModel(entity);
+        }
+
+        return null;
     }
 
     @Transactional(readOnly = true)
@@ -28,5 +33,10 @@ public class WorkingService {
         return listAll.stream()
                 .map(WorkingResponseModel::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void save(WorkingRequestModel workingRequestModel) {
+        workingRepository.save(workingRequestModel.toEntity());
     }
 }

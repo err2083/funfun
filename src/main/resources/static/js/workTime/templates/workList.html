@@ -1,0 +1,28 @@
+<table>
+    <tr>
+        <th>번호</th>
+        <th>월급</th>
+        <th>월급날</th>
+        <th>주 근무 일수</th>
+        <th>주 근무 시간</th>
+        <th>출근 시간</th>
+        <th>퇴근 시간</th>
+        <th>점심 시작 시간</th>
+        <th>점심 종료 시간</th>
+    </tr>
+    <tbody id="tbody">
+    {{#workingResponseModel}}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{salary}}</td>
+        <td>{{monthWorkingModel.salaryDay}}</td>
+        <td>{{monthWorkingModel.weekWorkingDay}}</td>
+        <td>{{weekWorkingTime}}</td>
+        <td>{{todayWorkingModel.workTime.from}}</td>
+        <td>{{todayWorkingModel.workTime.to}}</td>
+        <td>{{todayWorkingModel.restTime.from}}</td>
+        <td>{{todayWorkingModel.restTime.to}}</td>
+    </tr>
+    {{/workingResponseModel}}
+    </tbody>
+</table>

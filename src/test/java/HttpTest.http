@@ -5,10 +5,19 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-GET http://localhost:8080/working
+GET http://localhost:8080/working/10
 
 ###
 
-POST http://localhost:8080/setting?salaryDay=25&salary=2700000&checkWeekWorking=5&weekWorking=40&startWorkTime=08:30&endWorkTime=17:30
+
+GET http://localhost:8080/working/11
+
+###
+
+GET http://localhost:8080/working/12
+
+###
+
+GET http://localhost:8080/working/listAll
 
 ###

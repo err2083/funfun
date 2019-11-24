@@ -1,11 +1,8 @@
 package light.star.timeandmoney.domain;
 
-import light.star.timeandmoney.util.Constant;
-import light.star.timeandmoney.util.FunctionUtil;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Data
@@ -53,13 +50,6 @@ public class WorkingRequestModel {
                 .startWorkTime(this.getStartWorkTime())
                 .endWorkTime(this.getEndWorkTime())
                 .startRestTime(this.getStartRestTime())
-                .endRestTime(this.getEndRestTime())
-                .perIncreaseMoney(this.calculateMinuteIncreaseMoney()).build();
-    }
-
-    private int calculateMinuteIncreaseMoney(){
-        BigDecimal workHour = FunctionUtil.divideBigDecimal(weekWorkingTime, weekWorkingDay);
-        BigDecimal workMinute = workHour.multiply(new BigDecimal(Constant.oneHour_to_minute));
-        return FunctionUtil.divideBigDecimal(salary, workMinute).intValue();
+                .endRestTime(this.getEndRestTime()).build();
     }
 }

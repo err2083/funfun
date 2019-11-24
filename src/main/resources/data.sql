@@ -1,3 +1,3 @@
-INSERT INTO working_entity(id, salary, salary_day, week_working_day, end_work_time, start_work_time, week_working_time, count, per_increase_money) VALUES ('10','2700000', '25', '5', null, null, '40', '1','1');
-INSERT INTO working_entity(id, salary, salary_day, week_working_day, end_work_time, start_work_time, week_working_time, count, per_increase_money) VALUES ('11','1900000', '25', '5', null, null, '40', '1','1');
-INSERT INTO working_entity(id, salary, salary_day, week_working_day, end_work_time, start_work_time, week_working_time, count, per_increase_money) VALUES ('12','3300000', '25', '5', null, null, '40', '1','1');
+INSERT INTO working_entity(id, salary, salary_day, week_working_day, week_working_time, start_work_time, end_work_time, start_rest_time, end_rest_time) VALUES ('10','2700000', '25', '5','40', '08:30', '17:30', '12:00', '13:00');
+INSERT INTO working_entity(id, salary, salary_day, week_working_day, week_working_time, start_work_time, end_work_time, start_rest_time, end_rest_time) VALUES ('11','3600000', '25', '5','40', '07:30', '16:30', '12:00', '13:00');
+INSERT INTO working_entity(id, salary, salary_day, week_working_day, week_working_time, start_work_time, end_work_time, start_rest_time, end_rest_time) VALUES ('12','4000000', '25', '5','40', '09:30', '18:30', '12:00', '13:00');
