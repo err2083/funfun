@@ -1,8 +1,14 @@
-define(['jQuery','underscore','backbone'], function($, _, Backbone){
-    var Model =  require('workTime/model/working');
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'workTime/model/working'
+    ], function($, _, Backbone, Model){
 
     var Collection = Backbone.Collection.extend({
-        model: new Model(),
+        model: Model,
         url: '/working/listAll'
     });
+
+    return Collection;
 });

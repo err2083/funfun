@@ -1,15 +1,16 @@
-define(['jquery'], function ($) {
-
-    var template = require('workTime/templates/workTimeMain.html');
-    var workTimeList = require('workTime/view/workList');
-    var workingCollection = require('workTime/collection/working');
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!workTime/templates/workTimeMain.html',
+    'workTime/view/workList'
+], function ($, _, Backbone, template, WorkTimeList) {
 
     var View = Backbone.View.extend({
 
         el:'#content',
 
         initialize : function(){
-            this.model = new workingCollection();
         },
 
         render : function () {
@@ -18,7 +19,10 @@ define(['jquery'], function ($) {
         },
 
         renderList : function () {
-            //this.model.fetch();
+            var workTimeList = new WorkTimeList();
+            workTimeList.render();
         }
     });
+
+    return View;
 });
