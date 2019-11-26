@@ -2,9 +2,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'workTime/templates/workList.html',
-    'workTime/collection/working'
-], function ($, _, Backbone, Template, WorkingCollection) {
+    'text!workTime/templates/workList.html',
+    'workTime/collection/working',
+    'mustache'
+], function ($, _, Backbone, template, WorkingCollection, mustache) {
 
     var View = Backbone.View.extend({
 
@@ -15,7 +16,9 @@ define([
             this.collection = new WorkingCollection();
             this.collection.fetch();
 
-            $('workTimeList').append(new Template(JSON.stringify(this.collection)));
+            //todo not working collection.foreach
+
+            $('#workTimeList').append(mustache.render(template,{}));
         },
     });
 

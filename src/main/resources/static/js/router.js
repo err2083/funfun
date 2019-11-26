@@ -15,9 +15,7 @@ define([
         var appRouter = new AppRouter;
 
         appRouter.on('route:workTimeMain', function () {
-            //todo html 로딩하는법
             require(["workTime/view/workTimeMain"], function (View) {
-                console.log('good in');
                 var view = new View();
                 view.render();
             });
