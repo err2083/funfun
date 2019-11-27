@@ -4,12 +4,18 @@ define([
     'backbone',
     'text!workTime/templates/workTimeMain.html',
     'workTime/view/workList',
-    'mustache'
-], function ($, _, Backbone, template, WorkTimeList, mustache) {
+    'mustache',
+    'workTime/view/registry'
+], function ($, _, Backbone, template, WorkTimeList, mustache, Registry) {
 
     var View = Backbone.View.extend({
 
         el:'#content',
+
+        events: {
+            'click #workTimeRegister': "OpenRegister",
+            'click #workTimeRegister.open': "CloseRegister"
+        },
 
         initialize : function(){
             console.log('mustache exists:', mustache !== undefined);
@@ -23,6 +29,22 @@ define([
         renderList : function () {
             var workTimeList = new WorkTimeList();
             workTimeList.render();
+        },
+
+        OpenRegister : function(){
+            var $button = this.$el.find('#workTimeRegister');
+            $button.html('Register close');
+            $button.addClass('open');
+
+            var registry = new Registry();
+            registry.render();
+        },
+
+        CloseRegister: function () {
+            var $button = this.$el.find('#workTimeRegister');
+            $button.html('Register open');
+            $button.removeClass('open');
+            this.$el.find('#registry').html('');
         }
     });
 

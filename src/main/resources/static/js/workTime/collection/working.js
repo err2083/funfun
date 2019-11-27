@@ -7,7 +7,18 @@ define([
 
     var Collection = Backbone.Collection.extend({
         model: Model,
-        url: '/working/listAll'
+        url: '/working/listAll',
+
+        findJsonById : function(id) {
+            var ret;
+            this.models.forEach(function(model){
+                if(model.attributes.id == id){
+                    ret = model.attributes;
+                    return true;
+                }
+            });
+            return ret;
+        }
     });
 
     return Collection;

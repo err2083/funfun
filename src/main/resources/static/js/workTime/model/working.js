@@ -5,8 +5,13 @@ define([
     ],function($, _, Backbone){
 
     var Model = Backbone.Model.extend({
-        urlRoot : function(){
-            return /working/;
+
+        initialize : function(option){
+            this.id = option.id;
+        },
+
+        url : function(){
+            return /working/ + this.id;
         }
     });
 
