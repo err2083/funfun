@@ -12,7 +12,7 @@ define([
 
         url : function(){
             return /working/ + this.id;
-        }
+        },
     });
 
     return Model;

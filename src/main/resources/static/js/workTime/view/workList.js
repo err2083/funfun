@@ -4,8 +4,9 @@ define([
     'backbone',
     'text!workTime/templates/workList.html',
     'workTime/collection/working',
-    'mustache'
-], function ($, _, Backbone, template, WorkingCollection, mustache) {
+    'mustache',
+    'text!workTime/templates/run.html',
+], function ($, _, Backbone, template, WorkingCollection, mustache, runTemplate) {
 
     var View = Backbone.View.extend({
 
@@ -31,20 +32,40 @@ define([
             clearInterval(this.burning);
 
             var $target = $(event.currentTarget);
-            var id = $target.find(".workId").text();
-
-            var data = this.collection.findJsonById(id);
-
             var $result = this.$el.find('#result');
 
-            var perMoney = data.minuteIncreaseMoney / 60;
-            //todo
-            var now = 0;
+            var id = $target.find(".workId").text();
+            var data = this.collection.findJsonById(id);
+
+            console.info(data);
+
+            $result.html(mustache.render(runTemplate, {result:data}));
+
+            data.now = data.minuteIncreaseMoney * data.todayWorkingModel.workAndRestMinuteModel.workMinute;
+            data.perMoney = data.minuteIncreaseMoney / 60;
+
+            var $burningMoney = $result.find('#burningMoney');
+            var $endTime = $result.find('#endTime');
+            var $restTime = $result.find('#restTime');
+
+            var workSec = data.todayWorkingModel.workAndRestMinuteModel.workMinute * 60;
+            var restSec = data.todayWorkingModel.workAndRestMinuteModel.restMinute * 60;
+
             this.burning = setInterval(function(){
-                now = perMoney + now;
-                $result.html("<p>"+now+"</p>");
+                if(true){
+                    data.now = data.perMoney + data.now;
+                    $burningMoney.html(data.now);
+                    workSec = workSec - 1;
+                    $endTime.html(workSec);
+                } else if(true){
+                    restSec = restSec - 1;
+                    $restTime.html(restSec);
+                } else{
+                    $endTime.html('오늘 하루 수고하셨습니다.');
+                    clearInterval(this);
+                }
             },1000);
-        }
+        },
     });
 
     return View;

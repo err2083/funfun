@@ -11,19 +11,19 @@
         <th>점심 종료 시간</th>
     </tr>
     <tbody id="tbody" style="text-align: center">
-        {{#workTime}}
-        <tr class="workTarget">
-            <td class="workId">{{id}}</td>
-            <td>{{salary}}</td>
-            <td>{{monthWorkingModel.salaryDay}}</td>
-            <td>{{monthWorkingModel.weekWorkingDay}}</td>
-            <td>{{weekWorkingTime}}</td>
-            <td>{{todayWorkingModel.workTime.from}}</td>
-            <td>{{todayWorkingModel.workTime.to}}</td>
-            <td>{{todayWorkingModel.restTime.from}}</td>
-            <td>{{todayWorkingModel.restTime.to}}</td>
-        </tr>
-        {{/workTime}}
+    {{#workTime}}
+    <tr class="workTarget">
+        <td class="workId">{{id}}</td>
+        <td>{{salary}}</td>
+        <td>{{monthWorkingModel.salaryDay}}</td>
+        <td>{{monthWorkingModel.weekWorkingDay}}</td>
+        <td>{{weekWorkingTime}}</td>
+        <td>{{todayWorkingModel.workTime.from}}</td>
+        <td>{{todayWorkingModel.workTime.to}}</td>
+        <td>{{todayWorkingModel.restTime.from}}</td>
+        <td>{{todayWorkingModel.restTime.to}}</td>
+    </tr>
+    {{/workTime}}
     </tbody>
 </table>
 <button id="workTimeRegister">Register open</button>

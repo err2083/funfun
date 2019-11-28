@@ -1,0 +1,32 @@
+<table style="display:table;width:100%;table-layout: fixed;">
+    <tr>
+        <th>id</th>
+        <th>이전날 까지 번 액수(원)</th>
+        <th>월급날 까지 총 일 수(일)</th>
+        <th>월급날 까지 일 해야하는 일 수(일)</th>
+        <th>월급날 까지 쉬는 일 수(일)</th>
+        <th>지금까지 일한 총 일 수(일)</th>
+        <th>지금까지 일한 일 한 일 수(일)</th>
+        <th>지금까지 쉬었던 일 수(일)</th>
+        <th>퇴근까지 남은 시간(초)</th>
+        <th>남은 휴식시간(초)</th>
+        <th>오늘 번 액수(원)</th>
+    </tr>
+    <tbody style="text-align: center">
+    {{#result}}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{earnedMoney}}</td>
+        <td>{{monthWorkingModel.goal.totalDay}}</td>
+        <td>{{monthWorkingModel.goal.weekDay}}</td>
+        <td>{{monthWorkingModel.goal.weekendDay}}</td>
+        <td>{{monthWorkingModel.past.totalDay}}</td>
+        <td>{{monthWorkingModel.past.weekDay}}</td>
+        <td>{{monthWorkingModel.past.weekendDay}}</td>
+        <td id="endTime">...</td>
+        <td id="restTime">...</td>
+        <td id="burningMoney">{{burningMoney}}</td>
+    </tr>
+    {{/result}}
+    </tbody>
+</table>
