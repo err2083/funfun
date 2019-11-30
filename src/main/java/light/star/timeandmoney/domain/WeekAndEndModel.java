@@ -43,7 +43,7 @@ public class WeekAndEndModel {
         }
     }
 
-    private boolean isWeekendDay(DayOfWeek dayOfWeek) {
+    public boolean isWeekendDay(DayOfWeek dayOfWeek) {
         if (this.weekWorkingDay == 5) {
             return (dayOfWeek == DayOfWeek.SATURDAY) || (dayOfWeek == DayOfWeek.SUNDAY);
         } else if (this.weekWorkingDay == 6) {

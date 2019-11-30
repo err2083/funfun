@@ -21,12 +21,16 @@ public class MonthWorkingModel {
     //한달 기준 당일 포함안함 , 10일 월급날이고 오늘 10일 이면 false
     private boolean isAfterSalaryDay;
 
+    private boolean isWeekend;
+
     public MonthWorkingModel(int salaryDay, int weekWorkingDay){
         this.localDate = LocalDate.now();
         this.salaryDay = salaryDay;
         this.weekWorkingDay = weekWorkingDay;
         this.isAfterSalaryDay = (this.salaryDay < localDate.getDayOfMonth());
+
         makingWeekAndEndModel();
+        this.isWeekend = goal.isWeekendDay(this.localDate.getDayOfWeek());
     }
 
     private void makingWeekAndEndModel(){

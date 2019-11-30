@@ -5,8 +5,8 @@ define([
     'text!workTime/templates/workList.html',
     'workTime/collection/working',
     'mustache',
-    'text!workTime/templates/run.html',
-], function ($, _, Backbone, template, WorkingCollection, mustache, runTemplate) {
+    'workTime/view/timeRun'
+], function ($, _, Backbone, template, WorkingCollection, mustache, TimeRun) {
 
     var View = Backbone.View.extend({
 
@@ -17,7 +17,7 @@ define([
         },
 
         events: {
-            "click .workTarget": "run"
+            "click .workTarget": "timeRun"
         },
 
         render : function () {
@@ -28,43 +28,13 @@ define([
             });
         },
 
-        run : function(event){
-            clearInterval(this.burning);
-
+        timeRun : function(event){
             var $target = $(event.currentTarget);
-            var $result = this.$el.find('#result');
-
             var id = $target.find(".workId").text();
             var data = this.collection.findJsonById(id);
 
-            console.info(data);
-
-            $result.html(mustache.render(runTemplate, {result:data}));
-
-            data.now = data.minuteIncreaseMoney * data.todayWorkingModel.workAndRestMinuteModel.workMinute;
-            data.perMoney = data.minuteIncreaseMoney / 60;
-
-            var $burningMoney = $result.find('#burningMoney');
-            var $endTime = $result.find('#endTime');
-            var $restTime = $result.find('#restTime');
-
-            var workSec = data.todayWorkingModel.workAndRestMinuteModel.workMinute * 60;
-            var restSec = data.todayWorkingModel.workAndRestMinuteModel.restMinute * 60;
-
-            this.burning = setInterval(function(){
-                if(true){
-                    data.now = data.perMoney + data.now;
-                    $burningMoney.html(data.now);
-                    workSec = workSec - 1;
-                    $endTime.html(workSec);
-                } else if(true){
-                    restSec = restSec - 1;
-                    $restTime.html(restSec);
-                } else{
-                    $endTime.html('오늘 하루 수고하셨습니다.');
-                    clearInterval(this);
-                }
-            },1000);
+            var timeRun = new TimeRun(data);
+            timeRun.render();
         },
     });
 
