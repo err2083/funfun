@@ -3,6 +3,7 @@ package light.star.timeandmoney.domain;
 import light.star.timeandmoney.util.FunctionUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 

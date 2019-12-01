@@ -30,7 +30,7 @@ public class MonthWorkingModel {
         this.isAfterSalaryDay = (this.salaryDay < localDate.getDayOfMonth());
 
         makingWeekAndEndModel();
-        this.isWeekend = goal.isWeekendDay(this.localDate.getDayOfWeek());
+        this.isWeekend = WeekAndEndModel.isWeekendDay(this.localDate.getDayOfWeek(), this.weekWorkingDay);
     }
 
     private void makingWeekAndEndModel(){

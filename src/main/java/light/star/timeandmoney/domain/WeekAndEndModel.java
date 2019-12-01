@@ -2,7 +2,6 @@ package light.star.timeandmoney.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.time.DayOfWeek;
@@ -34,7 +33,7 @@ public class WeekAndEndModel {
     private void calculateRemainder(DayOfWeek dayOfWeek) {
         int cal = this.totalDay % 7;
         for (int i = dayOfWeek.getValue(); i < dayOfWeek.getValue() + cal; i++) {
-            boolean isWeekendDay = isWeekendDay(DayOfWeek.of((i + 6) % 7 + 1));
+            boolean isWeekendDay = isWeekendDay(DayOfWeek.of((i + 6) % 7 + 1), this.weekWorkingDay);
             if (isWeekendDay) {
                 this.weekendDay += 1;
             } else {
@@ -43,10 +42,10 @@ public class WeekAndEndModel {
         }
     }
 
-    public boolean isWeekendDay(DayOfWeek dayOfWeek) {
-        if (this.weekWorkingDay == 5) {
+    public static boolean isWeekendDay(DayOfWeek dayOfWeek, int weekWorkingDay) {
+        if (weekWorkingDay == 5) {
             return (dayOfWeek == DayOfWeek.SATURDAY) || (dayOfWeek == DayOfWeek.SUNDAY);
-        } else if (this.weekWorkingDay == 6) {
+        } else if (weekWorkingDay == 6) {
             return (dayOfWeek == DayOfWeek.SUNDAY);
         } else {
             return false;

@@ -7,7 +7,8 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             "workTime": "workTimeMain",
-            "starlight": "starlight"
+            "starlight": "starlight",
+            "home": "home"
         }
     });
 
@@ -23,6 +24,15 @@ define([
 
         appRouter.on('route:starlight', function () {
             console.log('starlight');
+        });
+
+        appRouter.on('route:home', function () {
+            console.log('home');
+            require(["workTime/view/home"], function (View) {
+                console.log('home');
+                var view = new View();
+                view.render();
+            });
         });
 
 

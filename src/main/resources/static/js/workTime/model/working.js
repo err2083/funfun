@@ -16,6 +16,27 @@ define([
             this.monthWorkingModel = data.monthWorkingModel;
             this.todayWorkingModel = data.todayWorkingModel;
             this.localTime = moment(data.todayWorkingModel.localTime, 'HH:mm:ssZ');
+
+            this.workTime = this.todayWorkingModel.workTime;
+            this.workStartTime = moment(this.workTime.from, 'HH:mm:ss');
+            this.workEndTime = moment(this.workTime.to, 'HH:mm:ss');
+            this.restTime = this.todayWorkingModel.restTime;
+            this.restStartTime = moment(this.restTime.from, 'HH:mm:ss');
+            this.restEndTime = moment(this.restTime.to, 'HH:mm:ss');
+            this.restDurationTime = this.restEndTime.diff(this.restStartTime, 'seconds');
+            this.workDurationTime = this.workEndTime.diff(this.workStartTime, 'seconds') - this.restDurationTime;
+
+            var workAndRestMinuteModel = this.todayWorkingModel.workAndRestMinuteModel;
+            this.set({workSec : workAndRestMinuteModel.workMinute * 60,
+                restSec : workAndRestMinuteModel.restMinute * 60,
+                secIncreaseMoney : this.minuteIncreaseMoney / 60,
+                earningMoney : this.minuteIncreaseMoney * workAndRestMinuteModel.workMinute
+            });
+
+            this.on({
+                "change:workSec" : this.calculateWeek,
+                "change:restSec" : this.calculateRest
+            });
         },
 
         url : function(){
@@ -27,48 +48,32 @@ define([
         },
 
         settingData : function(){
-            var workAndRestMinuteModel = this.todayWorkingModel.workAndRestMinuteModel;
-            this.set({workSec : workAndRestMinuteModel.workMinute * 60,
-                restSec : workAndRestMinuteModel.restMinute * 60,
-                secIncreaseMoney : this.minuteIncreaseMoney / 60,
-                earningMoney : this.minuteIncreaseMoney * workAndRestMinuteModel.workMinute});
+            //todo 서버시간이랑 프론트 시간의 갭이 있으므로 프론트 시간으로 다시 갱신해야함 or 서버에 다시보내기\
 
-            if(this.isWorkTime()){
-                this.set({earningMoney : this.get('earningMoney') + this.localTime.seconds() * this.secIncreaseMoney,
+            if(this.isWeekend()){
+                this.set({earningMoney : 0, workSec : 0, restSec : 0});
+            } else if(this.isWorkTime()){
+                this.set({earningMoney : this.get('earningMoney') + this.localTime.seconds() * this.get('secIncreaseMoney'),
                     workSec : this.get('workSec') + this.localTime.seconds()});
             } else if(this.isRestTime()){
                 this.set({restSec : this.get('restSec') + this.localTime.seconds()});
             }
 
-            var workTime = this.todayWorkingModel.workTime;
-            var workStartTime = moment(workTime.from, 'HH:mm:ss');
-            var workEndTime = moment(workTime.to, 'HH:mm:ss');
-            var restTime = this.todayWorkingModel.restTime;
-            var restStartTime = moment(restTime.from, 'HH:mm:ss');
-            var restEndTime = moment(restTime.to, 'HH:mm:ss');
-
-            var restDurationTime = restEndTime.diff(restStartTime, 'seconds');
-            var workDurationTime = workEndTime.diff(workStartTime, 'seconds') - restDurationTime;
-            this.set({leftRestSec : restDurationTime - this.get('restSec'),
-                leftWorkSec : workDurationTime - this.get('workSec')});
+            this.trigger('change:restSec');
+            this.trigger('change:workSec');
         },
 
         isWeekend: function(){
-            return this.monthWorkingModel.weekend;
+            // return this.monthWorkingModel.weekend;
+            return false;
         },
 
         isWorkTime: function () {
             //시간이 출근시간 이후 휴식시작 시간 이전, 휴식시작시간 이후 퇴근시간 이전
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
-            var workTime = this.todayWorkingModel.workTime;
-            var workStartTime = moment(workTime.from, 'HH:mm:ss');
-            var workEndTime = moment(workTime.to, 'HH:mm:ss');
-            var restTime = this.todayWorkingModel.restTime;
-            var restStartTime = moment(restTime.from, 'HH:mm:ss');
-            var restEndTime = moment(restTime.to, 'HH:mm:ss');
 
-            if ((pivotTime.diff(workStartTime) >= 0 && pivotTime.diff(restStartTime) < 0) ||
-                (pivotTime.diff(restEndTime) >= 0 && pivotTime.diff(workEndTime) < 0)) {
+            if ((pivotTime.diff(this.workStartTime) >= 0 && pivotTime.diff(this.restStartTime) < 0) ||
+                (pivotTime.diff(this.restEndTime) >= 0 && pivotTime.diff(this.workEndTime) < 0)) {
                 return true;
             }
             return false;
@@ -77,11 +82,8 @@ define([
         isRestTime: function () {
             //시간이 휴식시간 사이일때
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
-            var restTime = this.todayWorkingModel.restTime;
-            var restStartTime = moment(restTime.from, 'HH:mm:ss');
-            var restEndTime = moment(restTime.to, 'HH:mm:ss');
 
-            if (pivotTime.diff(restStartTime) >= 0 && pivotTime.diff(restEndTime) < 0) {
+            if (pivotTime.diff(this.restStartTime) >= 0 && pivotTime.diff(this.restEndTime) < 0) {
                 return true;
             }
             return false;
@@ -90,10 +92,8 @@ define([
         isAfterWorkTime: function () {
             //시간이 출근시간보다 뒤일때
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
-            var workTime = this.todayWorkingModel.workTime;
-            var workStartTime = moment(workTime.from, 'HH:mm:ss');
 
-            if (pivotTime.diff(workStartTime) < 0) {
+            if (pivotTime.diff(this.workStartTime) < 0) {
                 return true;
             }
             return false;
@@ -102,13 +102,20 @@ define([
         isBeforeWorkTime: function () {
             //서버시간이 퇴근시간보다 뒤일때
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
-            var workTime = this.todayWorkingModel.workTime;
-            var workEndTime = moment(workTime.to, 'HH:mm:ss');
 
-            if (pivotTime.diff(workEndTime) >= 0) {
+            if (pivotTime.diff(this.workEndTime) >= 0) {
                 return true;
             }
             return false;
+        },
+
+        calculateWeek : function () {
+            this.set({leftWorkSec : this.workDurationTime - this.get('workSec'),
+                earningMoney : this.get('earningMoney') + this.get('secIncreaseMoney')});
+        },
+
+        calculateRest : function(){
+            this.set({leftRestSec : this.restDurationTime - this.get('restSec')});
         }
     });
 

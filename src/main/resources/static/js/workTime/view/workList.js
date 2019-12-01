@@ -29,6 +29,10 @@ define([
         },
 
         timeRun : function(event){
+            //todo 단일 모델만 서버에서 다시 받아서 계산하는 방법 찾아보기 -중요도높음
+            this.undelegateEvents();
+            this.delegateEvents({"click .workTarget":"popup"});
+
             var $target = $(event.currentTarget);
             var id = $target.find(".workId").text();
             var data = this.collection.findJsonById(id);
@@ -36,6 +40,11 @@ define([
             var timeRun = new TimeRun(data);
             timeRun.render();
         },
+
+        popup : function(){
+            //todo 팝업이 뜨는 동안 Interval 이벤트가 동작하지 않음
+            alert("다른 타이머가 동작중입니다. 다시 실행시켜주세요");
+        }
     });
 
     return View;
