@@ -7,8 +7,9 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             "workTime": "workTimeMain",
-            "starlight": "starlight",
-            "home": "home"
+            "observer": "observer",
+            "home": "home",
+            "registry":"registry"
         }
     });
 
@@ -22,14 +23,16 @@ define([
             });
         });
 
-        appRouter.on('route:starlight', function () {
-            console.log('starlight');
+        appRouter.on('route:observer', function () {
+            require(["observer/view/home"], function (View) {
+                var view = new View();
+                view.render();
+            });
         });
 
+        //todo home 디렉토리 workTime 에서 변경하기
         appRouter.on('route:home', function () {
-            console.log('home');
             require(["workTime/view/home"], function (View) {
-                console.log('home');
                 var view = new View();
                 view.render();
             });

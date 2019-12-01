@@ -14,12 +14,16 @@ define([
         },
 
         events: {
-
+            "click #add":"addModel"
         },
 
         render : function () {
             this.$el.html(mustache.render(template));
         },
+
+        addModel : function(e){
+            console.info(e);
+        }
     });
 
     return View;

@@ -2,13 +2,17 @@
     <div>
         주 5일 (월~금) / 주 6일(월~토) - 주간 / 지정 요일, 야간 은 개발예정...
     </div>
-    <form action="#/registry" method="post">
-        월급 받는 날 : <input type="text" name="salaryDay"> day <br>
-        월급 : <input type="text" name="salary"> won <br>
-        1주 몆일 근무 : <input type="text" name="checkWeekWorking"> day <br>
-        1주 근무 시간 : <input type="text" name="weekWorking"> hour <br>
-        출근 시간 : <input type="time" name="startWorkTime"> hour <br>
-        퇴근 시간 : <input type="time" name="endWorkTime"> hour <br>
-        <input type="submit" value="submit"> <input type="reset" value="reset"> <br>
+    <form id="addForm" action="#/workTimeMain">
+        <div>
+            월급 받는 날 : <input type="text" name="salaryDay"> day <br>
+            월급 : <input type="text" name="salary"> 원 <br>
+            1주 몆일 근무 : <input type="text" name="checkWeekWorking"> 일 <br>
+            1주 근무 시간 : <input type="text" name="weekWorking"> 시간 <br>
+            출근 시간 : <input type="time" name="startWorkTime"> <br>
+            퇴근 시간 : <input type="time" name="endWorkTime"> <br>
+            휴식 시작 시간 : <input type="time" name="startRestTime"> <br>
+            휴식 종료 시간 : <input type="time" name="endRestTime"> <br>
+            <button id="add" formaction="#/workTimeMain">Add</button>
+        </div>
     </form>
 </div>

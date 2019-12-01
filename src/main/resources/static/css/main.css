@@ -1,0 +1,27 @@
+.box {
+    margin: 0 auto 200px auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    background: #44396c linear-gradient(-225deg, #fc2d2a 0%, #e3e554 100%);
+}
+
+.old{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    overflow:scroll;
+    background: #eee;
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+
+.new{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    overflow:scroll;
+    background: #eee;
+    position: relative;
+    width: 500px;
+    height: 500px;
+}

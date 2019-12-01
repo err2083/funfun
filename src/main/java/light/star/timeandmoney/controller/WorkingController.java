@@ -26,6 +26,7 @@ public class WorkingController {
 
     @PostMapping(value = "/working/save")
     public void setting(@RequestBody WorkingRequestModel workingRequestModel){
+        System.out.println("working/save");
         workingService.save(workingRequestModel);
     }
 }

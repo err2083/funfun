@@ -18,7 +18,6 @@ define([
         },
 
         initialize : function(){
-            console.log('mustache exists:', mustache !== undefined);
         },
 
         render : function () {
