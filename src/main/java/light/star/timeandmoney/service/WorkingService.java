@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,16 @@ public class WorkingService {
     }
 
     @Transactional
-    public void save(WorkingRequestModel workingRequestModel) {
-        workingRepository.save(workingRequestModel.toEntity());
+    public Long save(WorkingRequestModel workingRequestModel) {
+        WorkingEntity workingEntity = workingRepository.save(workingRequestModel.toEntity());
+        return workingEntity.getId();
+    }
+
+    public List<Long> saveAll(List<WorkingRequestModel> workingRequestModels) {
+        List<Long> ids = new ArrayList<>();
+        for(WorkingRequestModel w : workingRequestModels){
+            ids.add(workingRepository.save(w.toEntity()).getId());
+        }
+        return ids;
     }
 }

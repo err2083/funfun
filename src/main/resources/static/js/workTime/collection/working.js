@@ -7,13 +7,13 @@ define([
 
     var Collection = Backbone.Collection.extend({
         model: Model,
-        url: '/working/listAll',
+        url: '/working/collection',
 
-        findJsonById : function(id) {
-            var ret;
+        findById : function(id) {
+            var ret = undefined;
             this.models.forEach(function(model){
-                if(model.attributes.id == id){
-                    ret = model.attributes;
+                if(model.get('id') == id){
+                    ret = model;
                     return true;
                 }
             });

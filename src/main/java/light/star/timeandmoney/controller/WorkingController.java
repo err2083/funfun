@@ -14,19 +14,30 @@ public class WorkingController {
 
     WorkingService workingService;
 
-    @RequestMapping(value = "/working/{Id}", method = RequestMethod.GET)
-    public WorkingResponseModel findOne(@PathVariable String Id){
-        return workingService.findOne(Long.parseLong(Id));
+//    @GetMapping(value = "/working/listAll")
+//    public List<WorkingResponseModel> listAll() {
+//        return workingService.getList();
+//    }
+
+    //todo backbone 에서 서버로 보낼때 어떤 형태인지확인
+//    @GetMapping(value = "/working")
+//    public WorkingResponseModel findOne(@RequestBody Long id){
+//        return workingService.findOne(id);
+//    }
+
+    @PostMapping(value = "/working")
+    public Long postModel(@RequestBody WorkingRequestModel workingRequestModel){
+        return workingService.save(workingRequestModel);
     }
 
-    @GetMapping(value = "/working/listAll")
-    public List<WorkingResponseModel> listAll() {
+    @GetMapping(value = "/working/collection")
+    public List<WorkingResponseModel> getCollection() {
         return workingService.getList();
     }
 
-    @PostMapping(value = "/working/save")
-    public void setting(@RequestBody WorkingRequestModel workingRequestModel){
-        System.out.println("working/save");
-        workingService.save(workingRequestModel);
+    //todo 테스트 해봐야함
+    @PostMapping(value = "/working/collection")
+    public List<Long> postCollection(@RequestBody List<WorkingRequestModel> workingRequestModels) {
+        return workingService.saveAll(workingRequestModels);
     }
 }

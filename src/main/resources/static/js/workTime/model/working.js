@@ -8,14 +8,41 @@ define([
     var Model = Backbone.Model.extend({
 
         initialize : function(data){
-            this.id = data.id;
-            this.earnedMoney = data.earnedMoney;
-            this.minuteIncreaseMoney = data.minuteIncreaseMoney;
-            this.salary = data.salary;
-            this.weekWorkingTime = data.weekWorkingTime;
-            this.monthWorkingModel = data.monthWorkingModel;
-            this.todayWorkingModel = data.todayWorkingModel;
-            this.localTime = moment(data.todayWorkingModel.localTime, 'HH:mm:ssZ');
+            this.set({
+                salary: data.salary,
+                salaryDay: data.salaryDay,
+                weekWorkingDay: data.weekWorkingDay,
+                weekWorkingTime: data.weekWorkingTime,
+                startWorkTime: data.startWorkTime,
+                endWorkTime: data.endWorkTime,
+                startRestTime: data.startRestTime,
+                endRestTime: data.endRestTime
+            });
+
+            this.on({
+                "change:workSec" : this.calculateWeek,
+                "change:restSec" : this.calculateRest
+            });
+        },
+
+        url : function(){
+            return "/working"
+        },
+
+        getDataToJson : function(){
+            return this.toJSON();
+        },
+
+        settingData : function(){
+            //todo 서버시간이랑 프론트 시간의 갭이 있으므로 프론트 시간으로 다시 갱신해야함 or 서버에 다시보내기\
+
+            this.earnedMoney = this.get('earnedMoney');
+            this.minuteIncreaseMoney = this.get('minuteIncreaseMoney');
+            this.salary = this.get('salary');
+            this.weekWorkingTime = this.get('weekWorkingTime');
+            this.monthWorkingModel = this.get('monthWorkingModel');
+            this.todayWorkingModel = this.get('todayWorkingModel');
+            this.localTime = moment(this.get('todayWorkingModel').localTime, 'HH:mm:ssZ');
 
             this.workTime = this.todayWorkingModel.workTime;
             this.workStartTime = moment(this.workTime.from, 'HH:mm:ss');
@@ -33,23 +60,6 @@ define([
                 earningMoney : this.minuteIncreaseMoney * workAndRestMinuteModel.workMinute
             });
 
-            this.on({
-                "change:workSec" : this.calculateWeek,
-                "change:restSec" : this.calculateRest
-            });
-        },
-
-        url : function(){
-            return /working/ + this.id;
-        },
-
-        getDataToJson : function(){
-            return this.toJSON();
-        },
-
-        settingData : function(){
-            //todo 서버시간이랑 프론트 시간의 갭이 있으므로 프론트 시간으로 다시 갱신해야함 or 서버에 다시보내기\
-
             if(this.isWeekend()){
                 this.set({earningMoney : 0, workSec : 0, restSec : 0});
             } else if(this.isWorkTime()){
@@ -64,8 +74,7 @@ define([
         },
 
         isWeekend: function(){
-            // return this.monthWorkingModel.weekend;
-            return false;
+            return this.monthWorkingModel.weekend;
         },
 
         isWorkTime: function () {
@@ -90,20 +99,20 @@ define([
         },
 
         isAfterWorkTime: function () {
-            //시간이 출근시간보다 뒤일때
+            //퇴근후
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
 
-            if (pivotTime.diff(this.workStartTime) < 0) {
+            if (pivotTime.diff(this.workStartTime) >= 0) {
                 return true;
             }
             return false;
         },
 
         isBeforeWorkTime: function () {
-            //서버시간이 퇴근시간보다 뒤일때
+            //출근전
             var pivotTime = moment().set({hours: this.localTime.hours(), minutes: this.localTime.minutes()});
 
-            if (pivotTime.diff(this.workEndTime) >= 0) {
+            if (pivotTime.diff(this.workEndTime) < 0) {
                 return true;
             }
             return false;

@@ -12,9 +12,8 @@ define([
 
         el:'#timeRun',
 
-        initialize : function(data){
-            this.data = data;
-            this.model = new Working(data);
+        initialize : function(model){
+            this.model = model;
 
             //todo model 변경으로 뷰를 를 다시 그려야하는건지 확인
             this.listenTo(this.model, 'change', function(){
@@ -40,7 +39,7 @@ define([
             var $endTime = self.$el.find('#endTime');
             var $restTime = self.$el.find('#restTime');
 
-            //todo 전역객체로 설정하기
+            //todo window객체가 아닌 전역객체로 설정하기
             window.timer = setInterval(function () {
                 if(self.model.isWeekend()){
                     $endTime.html('오늘은 휴일 입니다.');
@@ -56,6 +55,7 @@ define([
                     clearInterval(window.timer);
                 } else if (self.model.isBeforeWorkTime()) {
                     $endTime.html('출근 전 입니다.');
+                    clearInterval(window.timer);
                 } else {
                     $endTime.html('오류입니다.');
                     clearInterval(window.timer);
