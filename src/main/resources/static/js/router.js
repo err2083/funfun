@@ -9,7 +9,7 @@ define([
             "workTime": "workTimeMain",
             "observer": "observer",
             "home": "home",
-            "registry":"registry"
+            "registry": "registry"
         }
     });
 

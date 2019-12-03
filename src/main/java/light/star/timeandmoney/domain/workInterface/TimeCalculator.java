@@ -6,5 +6,7 @@ import light.star.timeandmoney.domain.WorkAndRestMinuteModel;
 import java.time.LocalTime;
 
 public interface TimeCalculator {
-    WorkAndRestMinuteModel calculate(LocalTime localTime, FromToTimeModel workTime, FromToTimeModel restTime);
+    default WorkAndRestMinuteModel calculate(LocalTime localTime, FromToTimeModel workTime, FromToTimeModel restTime){
+        return new WorkAndRestMinuteModel();
+    }
 }

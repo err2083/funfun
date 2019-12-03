@@ -9,6 +9,6 @@ import java.time.LocalTime;
 public class BeforeWorkingStatus implements TimeCalculator {
     @Override
     public WorkAndRestMinuteModel calculate(LocalTime localTime, FromToTimeModel workTime, FromToTimeModel restTime) {
-        return new WorkAndRestMinuteModel(0,0);
+        return new WorkAndRestMinuteModel(0, 0);
     }
 }

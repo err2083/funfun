@@ -21,15 +21,14 @@ public class WorkingService {
     @Transactional
     public WorkingResponseModel findOne(Long id) {
         WorkingEntity entity = workingRepository.findById(id).orElse(null);
-        if (entity != null){
+        if (entity != null) {
             return new WorkingResponseModel(entity);
         }
-
         return null;
     }
 
     @Transactional(readOnly = true)
-    public List<WorkingResponseModel> getList(){
+    public List<WorkingResponseModel> getList() {
         List<WorkingEntity> listAll = workingRepository.findAllDesc();
         return listAll.stream()
                 .map(WorkingResponseModel::new)
@@ -44,7 +43,7 @@ public class WorkingService {
 
     public List<Long> saveAll(List<WorkingRequestModel> workingRequestModels) {
         List<Long> ids = new ArrayList<>();
-        for(WorkingRequestModel w : workingRequestModels){
+        for (WorkingRequestModel w : workingRequestModels) {
             ids.add(workingRepository.save(w.toEntity()).getId());
         }
         return ids;

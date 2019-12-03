@@ -20,7 +20,8 @@ public class WorkingEntity {
      */
     //todo : 데이터 보정 어노테이션
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
     //월급 받는 날짜
     private int SalaryDay;

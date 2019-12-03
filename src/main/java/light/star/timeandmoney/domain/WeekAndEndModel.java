@@ -10,6 +10,7 @@ import java.time.DayOfWeek;
 @NoArgsConstructor
 @ToString
 public class WeekAndEndModel {
+
     private int totalDay;
 
     private int weekDay;

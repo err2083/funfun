@@ -7,17 +7,15 @@ define([
 
     var View = Backbone.View.extend({
 
-        el:'#content',
+        el: '#content',
 
-        events: {
+        events: {},
 
-        },
-
-        initialize : function(){
+        initialize: function () {
 
         },
 
-        render : function () {
+        render: function () {
             this.$el.html('home');
         },
     });

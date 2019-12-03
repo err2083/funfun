@@ -3,11 +3,11 @@ define([
     'underscore',
     'backbone',
     'moment'
-    ],function($, _, Backbone, moment){
+], function ($, _, Backbone, moment) {
 
     var Model = Backbone.Model.extend({
 
-        initialize : function(data){
+        initialize: function (data) {
             this.set({
                 salary: data.salary,
                 salaryDay: data.salaryDay,
@@ -20,22 +20,21 @@ define([
             });
 
             this.on({
-                "change:workSec" : this.calculateWeek,
-                "change:restSec" : this.calculateRest
+                "change:workSec": this.calculateWeek,
+                "change:restSec": this.calculateRest
             });
         },
 
-        url : function(){
-            return "/working"
+        url: function () {
+            return "working";
         },
 
-        getDataToJson : function(){
+        //없어도 될것같다.
+        getDataToJson: function () {
             return this.toJSON();
         },
 
-        settingData : function(){
-            //todo 서버시간이랑 프론트 시간의 갭이 있으므로 프론트 시간으로 다시 갱신해야함 or 서버에 다시보내기\
-
+        settingData: function () {
             this.earnedMoney = this.get('earnedMoney');
             this.minuteIncreaseMoney = this.get('minuteIncreaseMoney');
             this.salary = this.get('salary');
@@ -54,26 +53,30 @@ define([
             this.workDurationTime = this.workEndTime.diff(this.workStartTime, 'seconds') - this.restDurationTime;
 
             var workAndRestMinuteModel = this.todayWorkingModel.workAndRestMinuteModel;
-            this.set({workSec : workAndRestMinuteModel.workMinute * 60,
-                restSec : workAndRestMinuteModel.restMinute * 60,
-                secIncreaseMoney : this.minuteIncreaseMoney / 60,
-                earningMoney : this.minuteIncreaseMoney * workAndRestMinuteModel.workMinute
+            //todo 현재 초 단위 액수가 계산이 안되있는 상태
+            this.set({
+                workSec: workAndRestMinuteModel.workMinute * 60,
+                restSec: workAndRestMinuteModel.restMinute * 60,
+                secIncreaseMoney: this.minuteIncreaseMoney / 60,
+                earningMoney: this.minuteIncreaseMoney * workAndRestMinuteModel.workMinute
             });
 
-            if(this.isWeekend()){
-                this.set({earningMoney : 0, workSec : 0, restSec : 0});
-            } else if(this.isWorkTime()){
-                this.set({earningMoney : this.get('earningMoney') + this.localTime.seconds() * this.get('secIncreaseMoney'),
-                    workSec : this.get('workSec') + this.localTime.seconds()});
-            } else if(this.isRestTime()){
-                this.set({restSec : this.get('restSec') + this.localTime.seconds()});
+            if (this.isWeekend()) {
+                this.set({earningMoney: 0, workSec: 0, restSec: 0});
+            } else if (this.isWorkTime()) {
+                this.set({
+                    earningMoney: this.get('earningMoney') + this.localTime.seconds() * this.get('secIncreaseMoney'),
+                    workSec: this.get('workSec') + this.localTime.seconds()
+                });
+            } else if (this.isRestTime()) {
+                this.set({restSec: this.get('restSec') + this.localTime.seconds()});
             }
 
             this.trigger('change:restSec');
             this.trigger('change:workSec');
         },
 
-        isWeekend: function(){
+        isWeekend: function () {
             return this.monthWorkingModel.weekend;
         },
 
@@ -118,13 +121,15 @@ define([
             return false;
         },
 
-        calculateWeek : function () {
-            this.set({leftWorkSec : this.workDurationTime - this.get('workSec'),
-                earningMoney : this.get('earningMoney') + this.get('secIncreaseMoney')});
+        calculateWeek: function () {
+            this.set({
+                leftWorkSec: this.workDurationTime - this.get('workSec'),
+                earningMoney: this.get('earningMoney') + this.get('secIncreaseMoney')
+            });
         },
 
-        calculateRest : function(){
-            this.set({leftRestSec : this.restDurationTime - this.get('restSec')});
+        calculateRest: function () {
+            this.set({leftRestSec: this.restDurationTime - this.get('restSec')});
         }
     });
 

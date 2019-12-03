@@ -8,32 +8,31 @@ define([
 
     var View = Backbone.View.extend({
 
-        el:'#content',
+        el: '#content',
 
-        events: {
+        events: {},
+
+        initialize: function () {
         },
 
-        initialize : function(){
-        },
-
-        render : function () {
+        render: function () {
             this.$el.html(mustache.render(template));
 
             this.scrollBoxEvent();
             this.observerEvent();
         },
 
-        scrollBoxEvent : function(){
+        scrollBoxEvent: function () {
             //todo view event 등록시 스크롤은 영역 지정이 안됨
             var self = this;
-            $("div.old").scroll(function(){
-                if(self.$el.find('#scrollEnd').is(':visible')){
+            $("div.old").scroll(function () {
+                if (self.$el.find('#scrollEnd').is(':visible')) {
                     self.scrollAdd()
                 }
             });
         },
 
-        observerEvent : function(){
+        observerEvent: function () {
             var self = this;
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
@@ -47,15 +46,15 @@ define([
             io.observe(box);
         },
 
-        scrollAdd : function(){
-            if($('div.box').length > 100){
+        scrollAdd: function () {
+            if ($('div.box').length > 100) {
                 return;
             }
             $('#scrollEnd').before("<div class='box'></div>");
         },
 
-        observerAdd : function(){
-            if($('div.box').length > 100){
+        observerAdd: function () {
+            if ($('div.box').length > 100) {
                 return;
             }
             $('#observerEnd').before("<div class='box'></div>");

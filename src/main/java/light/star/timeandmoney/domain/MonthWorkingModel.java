@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 @Getter
 @ToString
 public class MonthWorkingModel {
+
     private LocalDate localDate;
 
     private WeekAndEndModel goal;
@@ -23,7 +24,7 @@ public class MonthWorkingModel {
 
     private boolean isWeekend;
 
-    public MonthWorkingModel(int salaryDay, int weekWorkingDay){
+    public MonthWorkingModel(int salaryDay, int weekWorkingDay) {
         this.localDate = LocalDate.now();
         this.salaryDay = salaryDay;
         this.weekWorkingDay = weekWorkingDay;
@@ -33,7 +34,7 @@ public class MonthWorkingModel {
         this.isWeekend = WeekAndEndModel.isWeekendDay(this.localDate.getDayOfWeek(), this.weekWorkingDay);
     }
 
-    private void makingWeekAndEndModel(){
+    private void makingWeekAndEndModel() {
         int pastTotal, goalTotal;
         if (isAfterSalaryDay) { //오늘날짜가 월급날이 지났을 경우
             pastTotal = localDate.getDayOfMonth() - salaryDay - 1;

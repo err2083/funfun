@@ -19,7 +19,7 @@ public class TodayWorkingModel {
 
     private FromToTimeModel restTime;
 
-    public TodayWorkingModel(LocalTime startWorkTime, LocalTime endWorkTime, LocalTime startRestTime, LocalTime endRestTime){
+    public TodayWorkingModel(LocalTime startWorkTime, LocalTime endWorkTime, LocalTime startRestTime, LocalTime endRestTime) {
         localTime = LocalTime.now();
         this.workTime = new FromToTimeModel(startWorkTime, endWorkTime);
         this.restTime = new FromToTimeModel(startRestTime, endRestTime);
@@ -28,7 +28,7 @@ public class TodayWorkingModel {
     }
 
     //Test 용
-    public TodayWorkingModel(LocalTime lll, LocalTime startWorkTime, LocalTime endWorkTime, LocalTime startRestTime, LocalTime endRestTime){
+    public TodayWorkingModel(LocalTime lll, LocalTime startWorkTime, LocalTime endWorkTime, LocalTime startRestTime, LocalTime endRestTime) {
         localTime = lll;
         this.workTime = new FromToTimeModel(startWorkTime, endWorkTime);
         this.restTime = new FromToTimeModel(startRestTime, endRestTime);

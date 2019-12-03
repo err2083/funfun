@@ -2,27 +2,26 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'mustache',
     'text!workTime/templates/workTimeMain.html',
     'workTime/view/workList',
-    'mustache',
-], function ($, _, Backbone, template, WorkTimeList, mustache) {
+], function ($, _, Backbone, mustache, template, WorkTimeList) {
 
     var View = Backbone.View.extend({
 
-        el:'#content',
+        el: '#content',
 
-        events: {
+        events: {},
+
+        initialize: function () {
         },
 
-        initialize : function(){
-        },
-
-        render : function () {
+        render: function () {
             this.$el.html(mustache.render(template.toString()));
             this.renderList();
         },
 
-        renderList : function () {
+        renderList: function () {
             var workTimeList = new WorkTimeList();
             workTimeList.render();
         },

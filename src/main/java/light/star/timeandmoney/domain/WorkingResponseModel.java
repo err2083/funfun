@@ -3,14 +3,12 @@ package light.star.timeandmoney.domain;
 import light.star.timeandmoney.util.FunctionUtil;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class WorkingResponseModel {
-    //todo - MonthWorkingModel 이랑 TodayWorkingModel 속성제외 나머지 속성 지우기
 
     private Long id;
     //월급
@@ -26,7 +24,7 @@ public class WorkingResponseModel {
 
     private TodayWorkingModel todayWorkingModel;
 
-    public WorkingResponseModel(WorkingEntity entity){
+    public WorkingResponseModel(WorkingEntity entity) {
         this.id = entity.getId();
         this.salary = entity.getSalary();
         this.weekWorkingTime = entity.getWeekWorkingTime();
@@ -37,12 +35,12 @@ public class WorkingResponseModel {
         this.earnedMoney = makeEarnedMoney();
     }
 
-    private BigDecimal makeMinuteIncreaseMoney(){
+    private BigDecimal makeMinuteIncreaseMoney() {
         BigDecimal oneDayMoney = FunctionUtil.divideBigDecimal(salary, monthWorkingModel.getGoal().getWeekDay());
         return FunctionUtil.divideBigDecimal(oneDayMoney, todayWorkingModel.getWorkTime().fromToMinute() - todayWorkingModel.getRestTime().fromToMinute());
     }
 
-    private BigDecimal makeEarnedMoney(){
+    private BigDecimal makeEarnedMoney() {
         BigDecimal oneDayMoney = FunctionUtil.divideBigDecimal(salary, monthWorkingModel.getGoal().getWeekDay());
         return FunctionUtil.multiplyBigDecimal(oneDayMoney, monthWorkingModel.getPast().getWeekDay());
     }
