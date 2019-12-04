@@ -122,14 +122,27 @@ define([
         },
 
         calculateWeek: function () {
+            var leftWork = this.secToHHMMSS(this.workDurationTime - this.get('workSec'));
             this.set({
-                leftWorkSec: this.workDurationTime - this.get('workSec'),
+                leftWork: leftWork,
                 earningMoney: this.get('earningMoney') + this.get('secIncreaseMoney')
             });
         },
 
         calculateRest: function () {
-            this.set({leftRestSec: this.restDurationTime - this.get('restSec')});
+            var leftRest = this.secToHHMMSS(this.restDurationTime - this.get('restSec'));
+            this.set({leftRest: leftRest});
+        },
+
+        secToHHMMSS : function(sec){
+            var hours   = Math.floor(sec / 3600);
+            var minutes = Math.floor((sec - (hours * 3600)) / 60);
+            var seconds = sec - (hours * 3600) - (minutes * 60);
+
+            if (hours   < 10) {hours   = "0"+hours;}
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            return hours+':'+minutes+':'+seconds;
         }
     });
 
