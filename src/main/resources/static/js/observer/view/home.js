@@ -13,20 +13,32 @@ define([
         events: {},
 
         initialize: function () {
+            this.imgIndex = 3;
         },
 
         render: function () {
             this.$el.html(mustache.render(template));
 
+            this.appendImg();
+
             this.scrollBoxEvent();
             this.observerEvent();
+            //this.imgObserver();
+        },
+
+        appendImg: function () {
+            var i;
+            for (i = 3; i < 1044; i++) {
+                //$('#imgBox').append('<img data-src="img/redvelvet_seulgiimg' + i + '.jpg" class="img" width="400" height="400">');
+                $('#imgBox').append('<img src="img/redvelvet_seulgiimg' + i + '.jpg" class="img" width="400" height="400">');
+            }
         },
 
         scrollBoxEvent: function () {
             //todo view event 등록시 스크롤은 영역 지정이 안됨
             var self = this;
             $("div.old").scroll(function () {
-                if (self.$el.find('#scrollEnd').is(':visible')) {
+                if (self.isScrollDown()) {
                     self.scrollAdd()
                 }
             });
@@ -36,28 +48,52 @@ define([
             var self = this;
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
-                    if (entry.intersectionRatio > 0) {
+                    if (entry.isIntersecting) {
                         self.observerAdd();
                     }
                 });
+            }, {
+                threshold : 1
             });
 
-            var box = document.getElementById('observerEnd')
+            var box = document.getElementById('observerEnd');
             io.observe(box);
         },
 
         scrollAdd: function () {
-            if ($('div.box').length > 100) {
-                return;
-            }
             $('#scrollEnd').before("<div class='box'></div>");
         },
 
         observerAdd: function () {
-            if ($('div.box').length > 100) {
-                return;
-            }
             $('#observerEnd').before("<div class='box'></div>");
+        },
+
+        isScrollDown : function(){
+            var scrollTop = $('.old').scrollTop();
+            var clientH = document.getElementById('scrollBox').clientHeight;
+            console.info("scroll Evt");
+            if(clientH - scrollTop < 400){
+                return true;
+            }
+            return false;
+        },
+
+        imgObserver : function () {
+            var io = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.src = entry.target.dataset.src;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold : 0
+            });
+
+            var img = document.querySelectorAll('.img');
+            img.forEach(function(el){
+                io.observe(el);
+            });
         },
     });
 
@@ -75,10 +111,10 @@ define([
 //         }
 //     });
 // });
-
+//
 // var box = document.getElementById('moreButton');
 // io.observe(box);
-//
+
 
 // 올드 코드
 //
@@ -95,3 +131,24 @@ define([
 //         }
 //     }
 // });
+
+// var io = new IntersectionObserver(function (entries, observer) {
+//     entries.forEach(function (entry) {
+//         console.info(entry.rootBounds); // root 정보
+//         console.info(entry.target); // 타겟 정보
+//         console.info(entry.boundingClientRect); // 타겟 영역 정보
+//         console.info(entry.intersectionRect); // 교차된 영역의 정보
+//         console.info(entry.intersectionRatio); // 교차된 영역의 비율
+//         console.info(entry.isIntersecting); // 교차 유무
+//         console.info(entry.time); // 교차된 시간
+//     })
+// }, {
+//     root : null, // 교차영역의 기준이 될 dom 설정
+//     rootMargin : '0px 0px 0px 0px', // root el 의 마진값
+//     threshold : 0 // 교차 영역의 비율 0~1
+// });
+// var targetEl;
+// io.observe(targetEl); // target 에 대한 관찰 시작
+// io.unobserve(targetEl); // target 에 대한 관찰 중지
+// io.disconnect(); // 모든 관찰 중지
+// io.takeRecords(); // 객체의 배열 리턴
